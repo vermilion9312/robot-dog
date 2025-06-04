@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "joint.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,36 +97,21 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-//  TIM1->CCR1 = 200;
-  static uint16_t ccr = 280;
+  Joint* joint = new_Joint();
 
   while (1)
   {
+	  joint->set_angle(joint, 0);
+	  HAL_Delay(1000);
+	  joint->set_angle(joint, 45);
+	  HAL_Delay(1000);
+	  joint->set_angle(joint, 90);
+	  HAL_Delay(1000);
+	  joint->set_angle(joint, 135);
+	  HAL_Delay(1000);
+	  joint->set_angle(joint, 180);
+	  HAL_Delay(1000);
 
-
-	  static uint8_t state;
-
-	  switch(state)
-	  {
-	  case 0:
-		  ccr = 280;
-		  state++;
-		  break;
-	  case 1:
-		  ccr = 765;
-		  state++;
-		  break;
-	  case 2:
-		  ccr = 1250;
-		  state = 0;
-		  break;
-	  default:
-		  break;
-	  }
-
-	  TIM1->CCR1 = ccr;
-
-	  HAL_Delay(2000);
 
 
     /* USER CODE END WHILE */
@@ -221,7 +206,7 @@ static void MX_TIM1_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 5000;
+  sConfigOC.Pulse = 500;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
