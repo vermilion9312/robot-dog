@@ -15,9 +15,6 @@ static void set_angle(Joint* this, uint8_t angle)
     uint16_t ccr_min = this->pwm_range.ccr_min;
     uint16_t ccr_max = this->pwm_range.ccr_max;
 
-    // 보간 계산: angle 0~180 → ccr_min~ccr_max
-//    this->ccr_value = ccr_min + ((ccr_max - ccr_min) * angle) / 180;
-
     this->tim_typedef->CCR1 = ccr_min + ((ccr_max - ccr_min) * angle) / 180;
 }
 
