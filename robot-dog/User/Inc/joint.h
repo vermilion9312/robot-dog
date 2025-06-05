@@ -2,7 +2,7 @@
  * joint.h
  *
  *  Created on: Jun 4, 2025
- *      Author: vermi
+ *      Author: vermilion9312
  */
 
 #ifndef INC_JOINT_H_
@@ -10,6 +10,7 @@
 
 #include "main.h"
 #include "stm32f103xb.h"
+#include <stdlib.h>
 
 typedef enum {
 	HIP,
@@ -31,6 +32,6 @@ struct _Joint {
 	void (* set_angle)(Joint*, uint8_t);
 };
 
-Joint* new_Joint(void);
+Joint* new_Joint(TIM_TypeDef* tim_typedefm, uint16_t ccr_min, uint16_t ccr_max);
 
 #endif /* INC_JOINT_H_ */
