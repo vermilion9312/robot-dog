@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "joint.h"
+#include "uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +46,8 @@ TIM_HandleTypeDef htim1;
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
+
+static Uart* uart;
 
 /* USER CODE END PV */
 
@@ -80,6 +83,8 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
+  uart = new_Uart(&huart3);
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -94,8 +99,8 @@ int main(void)
   MX_TIM1_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-//  HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+  uart->receive(uart);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,15 +110,18 @@ int main(void)
 
   while (1)
   {
-	  joint->set_angle(joint, 0);
-	  HAL_Delay(1000);
-	  joint->set_angle(joint, 45);
-	  HAL_Delay(1000);
-	  joint->set_angle(joint, 90);
-	  HAL_Delay(1000);
-	  joint->set_angle(joint, 135);
-	  HAL_Delay(1000);
-	  joint->set_angle(joint, 180);
+//	  joint->set_angle(joint, 0);
+//	  HAL_Delay(1000);
+//	  joint->set_angle(joint, 45);
+//	  HAL_Delay(1000);
+//	  joint->set_angle(joint, 90);
+//	  HAL_Delay(1000);
+//	  joint->set_angle(joint, 135);
+//	  HAL_Delay(1000);
+//	  joint->set_angle(joint, 180);
+//	  HAL_Delay(1000);
+
+	  uart->transmit(uart);
 	  HAL_Delay(1000);
 
     /* USER CODE END WHILE */
@@ -302,13 +310,26 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Instance == TIM1)
 	{
-		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 	}
 }
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+	if (huart->Instance == USART3)
+	{
+		if (uart->receive(uart))
+		{
+			HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+		}
+	}
+}
+
 /* USER CODE END 4 */
 
 /**
