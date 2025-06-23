@@ -16,8 +16,8 @@ struct _Output {
 	GPIO_Config gpio_config;
 	bool state;
 
-	void (* on)(Output*);
-	void (* off)(Output*);
+	void (* turn_on)(Output*);
+	void (* turn_off)(Output*);
 	void (* toggle)(Output*);
 	bool (* is_on)(Output*);
 };

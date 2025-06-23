@@ -12,13 +12,13 @@
 
 typedef struct _Output Output;
 
-static void on(Output* this)
+static void turn_on(Output* this)
 {
 	HAL_GPIO_WritePin(this->gpio_config.GPIOx, this->gpio_config.GPIO_Pin, GPIO_PIN_SET);
 	this->state = true;
 }
 
-static void off(Output* this)
+static void turn_off(Output* this)
 {
 	HAL_GPIO_WritePin(this->gpio_config.GPIOx, this->gpio_config.GPIO_Pin, GPIO_PIN_RESET);
 	this->state = false;
@@ -26,7 +26,7 @@ static void off(Output* this)
 
 static void toggle(Output* this)
 {
-	this->state ? this->off(this) : this->on(this);
+	this->state ? this->turn_off(this) : this->turn_on(this);
 }
 
 static bool is_on(Output* this)
@@ -48,12 +48,12 @@ Output* new_Output(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 	this->gpio_config.GPIO_Pin = GPIO_Pin;
 	this->state                = false;
 
-	this->on     = on;
-	this->off    = off;
-	this->toggle = toggle;
-	this->is_on  = is_on;
+	this->turn_on  = turn_on;
+	this->turn_off = turn_off;
+	this->toggle   = toggle;
+	this->is_on    = is_on;
 
-	this->off(this);
+	this->turn_off(this);
 
 	return this;
 }
