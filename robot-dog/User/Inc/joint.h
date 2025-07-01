@@ -27,9 +27,13 @@ typedef struct {
 typedef struct _Joint Joint;
 
 struct _Joint {
+	TIM_HandleTypeDef *htim;
+	uint32_t Channel;
 	TIM_TypeDef* tim_typedef;
 	PWM_Range pwm_range;
 	void (* set_angle)(Joint*, uint8_t);
+	void (* set_angle2)(Joint*, uint8_t);
+	uint8_t current_angle;
 };
 
 Joint* new_Joint(TIM_TypeDef* tim_typedefm, uint16_t ccr_min, uint16_t ccr_max);
