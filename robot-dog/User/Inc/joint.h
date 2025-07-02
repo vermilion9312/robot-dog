@@ -11,6 +11,7 @@
 #include "main.h"
 #include "stm32f103xb.h"
 #include <stdlib.h>
+#include "pwm.h"
 
 typedef enum {
 	HIP,
@@ -18,21 +19,13 @@ typedef enum {
 	KNEE
 } JointType;
 
-typedef struct {
-	uint16_t ccr_min;
-	uint16_t ccr_max;
-} PWM_Range;
 
 
 typedef struct _Joint Joint;
 
 struct _Joint {
-	TIM_HandleTypeDef *htim;
-	uint32_t Channel;
-	TIM_TypeDef* tim_typedef;
-	PWM_Range pwm_range;
+	PWM* pwm;
 	void (* set_angle)(Joint*, uint8_t);
-	void (* set_angle2)(Joint*, uint8_t);
 	uint8_t current_angle;
 };
 

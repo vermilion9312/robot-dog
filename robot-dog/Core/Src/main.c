@@ -281,7 +281,7 @@ static void MX_TIM1_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 500;
+  sConfigOC.Pulse = 765;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
@@ -411,15 +411,15 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-	  Joint* joint_1 = new_Joint(TIM1, 280, 1250);
+	PWM* pwm = new_PWM(&htim1, TIM_CHANNEL_1, 280, 1250);
 
   /* Infinite loop */
   for(;;)
   {
-	  joint_1->set_angle(joint_1, 0);
-	  osDelay(TIMEOUT);
-	  joint_1->set_angle(joint_1, 20);
-	  osDelay(TIMEOUT);
+	  pwm->set_duty(pwm, 50.0f);
+	  osDelay(1000);
+	  pwm->set_duty(pwm, 75.0f);
+	  osDelay(1000);
   }
   /* USER CODE END 5 */
 }
@@ -434,14 +434,11 @@ void StartDefaultTask(void *argument)
 void StartTask02(void *argument)
 {
   /* USER CODE BEGIN StartTask02 */
-	Joint* joint_2 = new_Joint(TIM1, 280, 1250);
+
   /* Infinite loop */
   for(;;)
   {
-	  joint_2->set_angle2(joint_2, 0);
-	  osDelay(TIMEOUT);
-	  joint_2->set_angle2(joint_2, 20);
-	  osDelay(TIMEOUT);
+
   }
   /* USER CODE END StartTask02 */
 }
