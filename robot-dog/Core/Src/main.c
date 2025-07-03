@@ -185,7 +185,7 @@ int main(void)
 //	  HAL_Delay(1000);
 //	  joint->set_angle(joint, 180);
 //	  HAL_Delay(1000);
-
+//
 //	  uart->transmit(uart);
 //	  HAL_Delay(1000);
 
@@ -281,7 +281,7 @@ static void MX_TIM1_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 765;
+  sConfigOC.Pulse = 243;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
@@ -291,6 +291,7 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+  sConfigOC.Pulse = 1000;
   if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
@@ -411,15 +412,20 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-	PWM* pwm = new_PWM(&htim1, TIM_CHANNEL_1, 280, 1250);
+
+	Joint* thigh = new_Joint(new_PWM(&htim1, TIM_CHANNEL_2, 280, 1250)); // PA8
 
   /* Infinite loop */
   for(;;)
   {
-	  pwm->set_duty(pwm, 50.0f);
+
+	  thigh->set_angle(thigh, 135);
 	  osDelay(1000);
-	  pwm->set_duty(pwm, 75.0f);
-	  osDelay(1000);
+
+
+	  thigh->set_angle(thigh, 90);
+		osDelay(1000);
+
   }
   /* USER CODE END 5 */
 }
@@ -434,10 +440,14 @@ void StartDefaultTask(void *argument)
 void StartTask02(void *argument)
 {
   /* USER CODE BEGIN StartTask02 */
-
+	Joint* knee = new_Joint(new_PWM(&htim1, TIM_CHANNEL_1, 280, 1250)); // PA9
   /* Infinite loop */
   for(;;)
   {
+	  knee->set_angle(knee, 0);
+	  osDelay(1000);
+	  knee->set_angle(knee, 20);
+	 	  osDelay(1000);
 
   }
   /* USER CODE END StartTask02 */

@@ -18,8 +18,8 @@ static void set_duty(PWM* this, float duty)
 	if (duty < 0.0f) duty = 0.0f;
 	if (duty > 1.0f) duty = 1.0f;
 
-	uint32_t arr = this->htim->Instance->ARR;
-	uint32_t ccr_value = (uint32_t)(arr * duty);
+	uint32_t range = (uint32_t)(this->ccr_max - this->ccr_min);
+	uint32_t ccr_value = this->ccr_min + (uint32_t)(range * duty);
 
 	set_ccr(this, ccr_value);
 }

@@ -20,15 +20,14 @@ typedef enum {
 } JointType;
 
 
-
 typedef struct _Joint Joint;
 
 struct _Joint {
 	PWM* pwm;
-	void (* set_angle)(Joint*, uint8_t);
+	void (* set_angle)(Joint*, float);
 	uint8_t current_angle;
 };
 
-Joint* new_Joint(TIM_TypeDef* tim_typedefm, uint16_t ccr_min, uint16_t ccr_max);
+Joint* new_Joint(PWM* pwm);
 
 #endif /* INC_JOINT_H_ */
