@@ -10,3 +10,6 @@
 - 폴더명과 파일명은 영어로, `.md` 문서 본문은 한국어로 작성하기로 했다.
 - `pcb-design/skidl/main.py`를 SKIDL 기반 PCB 설계 자동화 진입점으로 정했다.
 - SKIDL 코드는 전원부, MCU, 서보 커넥터, 확장 포트를 객체지향 블록으로 나누어 설계하기로 했다.
+- `pcb-design/skidl/main.py`와 `robot_dog_pcb` 패키지의 초기 객체 구조를 만들었다.
+- 각 회로 블록이 소자 pin과 net의 연결 관계를 `PinConnection`으로 표현하도록 했다.
+- SKIDL 설치 전에도 검증 가능한 Python 단위 테스트를 추가했다.
